@@ -36,7 +36,10 @@
     {#each p.groups as g (g.problem)}
       <tr class:open={!tickets[g.problem]}>
         <td>{names[g.problem] ?? g.problem} <code>{g.problem}</code></td>
-        <td>{g.reports.length}</td>
+        <td>
+          {g.reports.length}
+          {#each Object.entries(g.alsoIn) as [p, n] (p)}<span class="also">also counted in <code>{p}</code> ×{n}</span>{/each}
+        </td>
         <td>{g.tenants}</td>
         <td class="tags">{list(g.channels)}</td>
         <td class="tags">{list(g.taggedAs)}</td>
@@ -53,6 +56,7 @@
   .sum { font-size: 1.1rem; }
   .rows { color: var(--muted); font-size: 0.85rem; }
   .tags { color: var(--muted); font-size: 0.85em; }
+  .also { display: block; color: var(--muted); font-size: 0.8em; }
   .open td { background: var(--warn-bg); }
   .open td:last-child { color: var(--warn); font-weight: 600; }
 </style>
