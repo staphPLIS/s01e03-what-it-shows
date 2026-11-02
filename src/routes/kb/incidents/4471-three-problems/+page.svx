@@ -4,7 +4,7 @@ title: '#4471 · three problems, not one'
 owner: support desk
 status: open
 reviewed: 2026-11-02
-signature: staphPLIS
+signature: v1.eyJzdWIiOiI1OTQiLCJhdWQiOiJjaGFsbGVuZ2U6d2hhdC1pdC1zaG93cyIsImlhdCI6MTc5MzY0ODAzOCwiZXhwIjoxNzkzNzM0NDM4fQ.-SiQ1Cjma28IDSztt6afiq7DIk73XGD_2q5EfHyufCM
 ---
 
 <script>

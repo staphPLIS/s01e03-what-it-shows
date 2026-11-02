@@ -49,7 +49,7 @@ The desk merged 412 reports into #4471 as one issue. They are three problems, ea
 
 The counts are not typed here: the kb page calculates them from `src/lib/data/` at each render.
 
-- The page: `src/routes/kb/incidents/4471-three-problems/+page.svx`, signed `staphPLIS`.
+- The page: `src/routes/kb/incidents/4471-three-problems/+page.svx`, signed with the course ticket (frontmatter `signature`).
 - Its logic: `src/lib/kb/problems.ts`, `src/lib/kb/ProblemTable.svelte`, `src/lib/kb/ProblemCount.svelte`.
 - The page as the desk sees it: `rendered/kb/incidents/4471-three-problems/index.html`, and a screenshot in `rendered/4471-three-problems.png`.
 - To render it again: `render/build.sh` (SvelteKit and mdsvex; writes `rendered/`).
