@@ -1,0 +1,74 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: open
+reviewed: 2026-11-02
+signature: staphPLIS
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import ProblemCount from '#lib/kb/ProblemCount.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const names = {
+    parser: 'The shared parser reads dates month first',
+    hint: 'The booking-v3 form hint says month first',
+    shift: 'The date moves by one day',
+  };
+  const tickets = {
+    parser: 'https://github.com/staphPLIS/s01e03-what-it-shows/issues/1',
+    hint: 'https://github.com/staphPLIS/s01e03-what-it-shows/issues/2',
+    shift: 'https://github.com/staphPLIS/s01e03-what-it-shows/issues/3',
+  };
+</script>
+
+The [#4471 page](/kb/incidents/4471) says "one issue, one fix queued". The reports in #4471
+show three problems. Each problem needs its own fix, and each problem now has its own ticket.
+
+<Callout kind="warn">
+Not one issue. The queued parser fix closes only the first problem. The other two problems stay open after it ships.
+</Callout>
+
+## What is in #4471
+
+<ProblemTable ticket={4471} {names} {tickets} />
+
+The table counts each report one time. The ticket export holds <ProblemCount ticket={4471} problem="copies" /> copies,
+because its pages overlap. The cause comes from the tenant (`locales.ts`), not from the tag that intake gave.
+Intake guesses the tag from the browser of the reporter, so the tag is often wrong.
+
+## The three problems
+
+1. **The shared parser reads dates month first** (<ProblemCount ticket={4471} problem="parser" /> reports).
+   All our tenants write the day first. When the day is 12 or less, the parser swaps the day and the month:
+   "5 March is now 3 May". This is the fix that is queued.
+2. **The booking-v3 form hint says month first** (<ProblemCount ticket={4471} problem="hint" /> reports).
+   These reports come only through the booking form of tenants on booking-v3. The form prints
+   `MM/DD/YYYY` under its date field, so people type the month first. The form then reads the date day first.
+   The parser fix does not change this. The hint and the read must agree.
+3. **The date moves by one day** (<ProblemCount ticket={4471} problem="shift" /> reports).
+   No day and month swap occurs: "Tuesday 12 May. Calendar says Monday 11 May", "Client in Lisbon got Tuesday.
+   Client in Toronto got Monday". The desk read these as a one-day move (`desk-notes.json`), but the #4471 page
+   counts them under the parser by tenant. The pattern is a time zone problem, not a date order problem.
+
+## Since April
+
+<QueueTimeline ticket={4471} />
+
+## Why they were merged
+
+[Decision 0001](/kb/decisions/0001-dedupe-by-subject) merges reports when their subject lines match. All three
+problems come in with the same subjects ("Wrong day on the invite", "Date is wrong"), so the desk merged them into one
+ticket. Subject lines tell us that a date is wrong. They do not tell us why.
+
+## What to do
+
+- Keep #4471 for the parser problem only. Move the other reports to their own tickets.
+- When a new date report comes in, find its problem with the tenant, the channel and the body. Do not use the subject alone.
+- The desk keeps merging new reports into #4471. The table above counts them again at each render, so read the numbers there, not in an old copy of this page.
+
+<RenderStamp {signature} />
